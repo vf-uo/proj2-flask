@@ -29,6 +29,10 @@ tr.even {
     /* A little lighter */ 
     background-color: rgb(224,213,179);
 }
+tr.thisweek {
+    /* highlighted section */
+    background-color: rgb(255,255,92);
+}
 
 .class-schedule .week {
     

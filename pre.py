@@ -10,7 +10,7 @@ def process(raw):
     Line by line processing of syllabus file.  Each line that needs
     processing is preceded by 'head: ' for some string 'head'.  Lines
     may be continued if they don't contain ':'.  
-    """
+    """	
     field = None
     entry = { }
     cooked = [ ] 
@@ -31,7 +31,8 @@ def process(raw):
 
         if field == "begin":
             try:
-                base = arrow.get(content)
+                content = content[2:]
+                base = arrow.get(content,"MM/DD/YYYY")
             except:
                 raise ValueError("Unable to parse date {}".format(content))
 
@@ -41,8 +42,20 @@ def process(raw):
                 entry = { }
             entry['topic'] = ""
             entry['project'] = ""
-            entry['week'] = content
-
+            #content = int(content)
+            #base = base.replace(week=+content)
+            #base = base.replace(week=+int(content))
+            #entry['week'] = base.replace(week=+1).format("MM/DD/YYYY")
+            content2 = int(content)-1
+            entry['week'] = base.replace(weeks=+content2).format("MM/DD/YYYY")
+            now= arrow.utcnow().format('MM/DD/YYYY')
+            weekBegin = base.replace(weeks=+content2).format("MM/DD/YYYY")
+            weekEnd = base.replace(weeks=+content2+1).format("MM/DD/YYYY")
+            if (now >= weekBegin and now < weekEnd):
+                thisWeek=True
+            else:
+                thisWeek = False
+            entry['thisweek1'] = thisWeek
         elif field == 'topic' or field == 'project':
             entry[field] = content
 
